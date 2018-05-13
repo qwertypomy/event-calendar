@@ -1,0 +1,69 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
+import GoogleLogin from 'react-google-login'
+import { AppBar, RaisedButton } from 'material-ui'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+
+import UserMenu from './UserMenu'
+
+import * as authActions from '../../actions/auth'
+
+class Header extends Component {
+  onGoogleResponse = res => {
+    this.props.googleLogin(res.Zi.id_token)
+  }
+
+  render() {
+    const { user, loginLoading, authLoading } = this.props
+
+    const iconElementRight = user ? (
+      <UserMenu user={user} />
+    ) : !authLoading ? (
+      <RaisedButton backgroundColor="#e54c3c" style={{ width: '106px', marginTop: '6px' }} buttonStyle={{ color: 'white' }}>
+        <GoogleLogin
+          clientId="208617087211-g7gfn9hqpeblg4bme0fk1irrno6tr16f.apps.googleusercontent.com"
+          onSuccess={this.onGoogleResponse}
+          onFailure={this.onGoogleResponse}
+          type=""
+          style={{}}
+          disabled={loginLoading}
+          tag="span"
+        >
+          <FontAwesomeIcon icon={['fab', 'google-plus-g']} />
+          <span style={{ marginLeft: '0.6em' }}>Sign in</span>
+        </GoogleLogin>
+      </RaisedButton>
+    ) : null
+    return (
+      <AppBar
+        showMenuIconButton={false}
+        title="Event calendar"
+        iconElementRight={iconElementRight}
+        iconStyleRight={user ? { marginRight: 'auto' } : null}
+      />
+    )
+  }
+}
+
+Header.propTypes = {
+  user: PropTypes.object,
+  authLoading: PropTypes.bool.isRequired,
+  loginLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  googleLogin: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  authLoading: state.auth.authLoading,
+  loginLoading: state.auth.loginLoading,
+  error: state.auth.error
+})
+
+const mapDispatchToProps = dispatch => ({
+  googleLogin: idToken => dispatch(authActions.googleLogin(idToken))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
