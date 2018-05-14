@@ -10,7 +10,7 @@ async function createEvent({ user, body: { start, duration, title } }, res) {
   user.events.push(event._id);
   debug(user);
   await user.save();
-  return res.json(_.pick(event, ['_id', 'title', 'start', 'duration', 'created_at']));
+  return res.json({ event: _.pick(event, ['_id', 'title', 'start', 'duration', 'created_at']) });
 }
 
 async function deleteEvent({ user, params: { id } }, res) {
@@ -18,7 +18,7 @@ async function deleteEvent({ user, params: { id } }, res) {
   _.remove(user.events, eventId => eventId === event._id);
   await user.save();
   debug(event);
-  return res.json(_.pick(event, ['_id', 'title', 'start', 'duration', 'created_at']));
+  return res.json({ event: _.pick(event, ['_id', 'title', 'start', 'duration', 'created_at']) });
 }
 
 module.exports = { createEvent, deleteEvent };

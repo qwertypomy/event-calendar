@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import * as authActions from '../../actions/auth'
-
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
+import { authorize } from '../../actions/auth'
 
 import Header from '../Header'
 import Notification from '../Notification'
+import EventBoard from '../EventBoard'
 
 class Home extends Component {
   componentWillMount() {
-    if (localStorage.getItem('AUTH_TOKEN')) this.props.authorize()
+    this.props.authorize()
   }
 
   render() {
@@ -19,9 +17,7 @@ class Home extends Component {
       <Fragment>
         <Header />
         <Notification />
-        <FloatingActionButton style={{ position: 'fixed', bottom: '3vh', right: '3vh' }}>
-          <ContentAdd />
-        </FloatingActionButton>
+        <EventBoard />
       </Fragment>
     )
   }
@@ -32,7 +28,7 @@ Home.propTypes = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  authorize: authToken => dispatch(authActions.authorize(authToken))
+  authorize: authToken => dispatch(authorize(authToken))
 })
 
 export default connect(null, mapDispatchToProps)(Home)

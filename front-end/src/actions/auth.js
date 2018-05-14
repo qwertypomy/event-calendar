@@ -57,11 +57,14 @@ export const authUserFail = payload => ({
 })
 
 export const authorize = authToken => dispatch => {
+  const authToken = localStorage.getItem('AUTH_TOKEN')
+  if (!authToken) return
+
   dispatch(authUserStart())
   axios({
     method: 'get',
     url: '/user/profile',
-    headers: { Authorization: localStorage.getItem('AUTH_TOKEN') }
+    headers: { Authorization: authToken }
   })
     .then(res => {
       dispatch(authUserSuccess(res.data))

@@ -8,7 +8,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import UserMenu from './UserMenu'
 
-import * as authActions from '../../actions/auth'
+import { googleLogin } from '../../actions/auth'
 
 class Header extends Component {
   onGoogleResponse = res => {
@@ -63,7 +63,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  googleLogin: idToken => dispatch(authActions.googleLogin(idToken))
+  googleLogin: idToken => dispatch(googleLogin(idToken))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
