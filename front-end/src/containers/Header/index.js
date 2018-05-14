@@ -21,7 +21,7 @@ class Header extends Component {
     const iconElementRight = user ? (
       <UserMenu user={user} />
     ) : !authLoading ? (
-      <RaisedButton backgroundColor="#e54c3c" style={{ width: '106px', marginTop: '6px' }} buttonStyle={{ color: 'white' }}>
+      <RaisedButton secondary style={{ width: '106px', marginTop: '6px' }} buttonStyle={{ color: 'white' }}>
         <GoogleLogin
           clientId="208617087211-g7gfn9hqpeblg4bme0fk1irrno6tr16f.apps.googleusercontent.com"
           onSuccess={this.onGoogleResponse}

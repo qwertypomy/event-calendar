@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    picture: String
+    picture: String,
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event', default: [] }]
   },
   {
     timestamps: true

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as authActions from '../../actions/auth'
 
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+
 import Header from '../Header'
 import Notification from '../Notification'
 
@@ -16,6 +19,9 @@ class Home extends Component {
       <Fragment>
         <Header />
         <Notification />
+        <FloatingActionButton style={{ position: 'fixed', bottom: '3vh', right: '3vh' }}>
+          <ContentAdd />
+        </FloatingActionButton>
       </Fragment>
     )
   }
