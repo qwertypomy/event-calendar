@@ -12,6 +12,7 @@ class Notification extends Component {
     const { isShown, message, type, hideNotification } = this.props
     return (
       <Snackbar
+        style={{ backgroundColor: 'white' }}
         bodyStyle={{ backgroundColor: type === 'danger' ? 'rgb(244, 67, 54, 0.1)' : 'rgb(0, 188, 212, 0.1)' }}
         contentStyle={{ color: type === 'danger' ? red600 : cyan600 }}
         open={!!isShown}

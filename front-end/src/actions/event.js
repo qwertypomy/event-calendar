@@ -1,5 +1,8 @@
 import axios from '../axios'
 import { notify } from './notification'
+import { hideCreateEventForm } from './createEventForm'
+
+import { store } from '../store'
 
 import {
   CREATE_EVENT_START,
@@ -25,11 +28,24 @@ export const createEventFail = payload => ({
 })
 
 export const createEvent = payload => dispatch => {
+  if (!store.getState().auth.user) {
+    dispatch(createEventSuccess(payload))
+    dispatch(hideCreateEventForm())
+    return
+  }
+
+  const authToken = localStorage.getItem('AUTH_TOKEN')
+
   dispatch(createEventStart())
-  axios
-    .post('/events', payload)
+  axios({
+    method: 'post',
+    url: '/events',
+    data: payload,
+    headers: { Authorization: authToken }
+  })
     .then(res => {
       dispatch(createEventSuccess(res.data))
+      dispatch(hideCreateEventForm())
     })
     .catch(err => {
       console.log('ERRORS', err)
@@ -54,9 +70,16 @@ export const removeEventFail = payload => ({
 })
 
 export const removeEvent = eventId => dispatch => {
+  if (!store.getState().auth.user) return dispatch(removeEventSuccess({ _id: eventId }))
+
+  const authToken = localStorage.getItem('AUTH_TOKEN')
+
   dispatch(removeEventStart())
-  axios
-    .delete(`/events/${eventId}`)
+  axios({
+    method: 'delete',
+    url: `/events/${eventId}`,
+    headers: { Authorization: authToken }
+  })
     .then(res => {
       dispatch(removeEventStart(res.data))
     })

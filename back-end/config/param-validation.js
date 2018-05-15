@@ -20,19 +20,25 @@ module.exports = {
   // POST /api/event
   createEvent: {
     headers,
-    start: Joi.number()
-      .min(0)
-      .max(539),
-    duration: Joi.number()
-      .min(1)
-      .required(),
-    title: Joi.string()
-      .trim()
-      .min(1)
-      .required()
+    body: {
+      start: Joi.number()
+        .min(0)
+        .max(539)
+        .required(),
+      duration: Joi.number()
+        .min(1)
+        .required(),
+      title: Joi.string()
+        .trim()
+        .min(1)
+        .required()
+    }
   },
   // DELETE /api/event
   deleteEvent: {
-    headers
+    headers,
+    params: {
+      id: Joi.string().required()
+    }
   }
 };
