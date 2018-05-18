@@ -29,7 +29,7 @@ export const createEventFail = payload => ({
 
 export const createEvent = payload => dispatch => {
   if (!store.getState().auth.user) {
-    dispatch(createEventSuccess(payload))
+    dispatch(createEventSuccess({ event: payload }))
     dispatch(hideCreateEventForm())
     return
   }
@@ -70,7 +70,7 @@ export const removeEventFail = payload => ({
 })
 
 export const removeEvent = eventId => dispatch => {
-  if (!store.getState().auth.user) return dispatch(removeEventSuccess({ _id: eventId }))
+  if (!store.getState().auth.user) return dispatch(removeEventSuccess({ event: { _id: eventId } }))
 
   const authToken = localStorage.getItem('AUTH_TOKEN')
 

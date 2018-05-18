@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
         authLoading: false
       }
     case AUTH_USER_FAIL:
-      localStorage.removeItem('AUTH_TOKEN')
+      if (action.payload.message !== 'Network Error') localStorage.removeItem('AUTH_TOKEN')
       return {
         ...state,
         authLoading: false,

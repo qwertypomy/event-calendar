@@ -57,12 +57,14 @@ const reducer = (state = initialState, action) => {
 
     case CREATE_EVENT_SUCCESS:
       return {
+        ...state,
         events: _.concat(state.events, action.payload.event),
         loading: false
       }
 
     case REMOVE_EVENT_SUCCESS:
       return {
+        ...state,
         events: _.differenceBy(state.events, [action.payload.event], '_id'),
         loading: false
       }

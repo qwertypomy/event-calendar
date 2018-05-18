@@ -6,8 +6,8 @@ import { showCreateEventForm } from '../../../actions/createEventForm'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
-const CreateEventButton = ({showCreateEventForm}) => (
-  <FloatingActionButton onClick={showCreateEventForm} style={{ position: 'fixed', bottom: '3vh', right: '3vh' }}>
+const CreateEventButton = ({ showCreateEventForm }) => (
+  <FloatingActionButton onClick={showCreateEventForm} style={{ position: 'fixed', bottom: '3vh', right: '3vh', zIndex: 2 }}>
     <ContentAdd />
   </FloatingActionButton>
 )

@@ -114,12 +114,14 @@ class CreateEventForm extends Component {
           floatingLabelText="Start Time"
           onChange={(_, value) => this.handleInputChange('startTime', value)}
           errorText={startTimeErrorText}
+          minutesStep={15}
           fullWidth
         />
         <TimePicker
           floatingLabelText="End Time"
           onChange={(_, value) => this.handleInputChange('endTime', value)}
           errorText={endTimeErrorText}
+          minutesStep={15}
           fullWidth
         />
       </Dialog>

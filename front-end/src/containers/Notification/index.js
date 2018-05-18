@@ -17,7 +17,7 @@ class Notification extends Component {
         contentStyle={{ color: type === 'danger' ? red600 : cyan600 }}
         open={!!isShown}
         message={message ? message : ''}
-        autoHideDuration={4000}
+        autoHideDuration={2000}
         onRequestClose={hideNotification}
       />
     )
