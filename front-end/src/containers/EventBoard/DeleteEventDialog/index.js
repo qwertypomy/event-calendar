@@ -28,8 +28,8 @@ class DeleteEventDialog extends Component {
       <Dialog
         title={this.formatTime(event.start) + ' - ' + this.formatTime(event.start + event.duration)}
         actions={actions}
-        modal={true}
         open={true}
+        onRequestClose={hideDeleteEventDialog}
       >
         {event.title}
       </Dialog>

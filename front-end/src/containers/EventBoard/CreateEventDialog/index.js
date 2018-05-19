@@ -93,17 +93,17 @@ class CreateEventDialog extends Component {
   }
 
   render() {
-    const { loading } = this.props
+    const { loading, hideCreateEventDialog } = this.props
     const { titleValid, startTimeValid, endTimeValid, titleErrorText, startTimeErrorText, endTimeErrorText } = this.state
     const isSaveButtonDisabled = loading || !titleValid || !startTimeValid || !endTimeValid
 
     const actions = [
-      <FlatButton label="Cancel" primary onClick={this.props.hideCreateEventDialog} />,
+      <FlatButton label="Cancel" primary onClick={hideCreateEventDialog} />,
       <FlatButton label="Save" primary onClick={this.handleSave} disabled={isSaveButtonDisabled} />
     ]
 
     return (
-      <Dialog title="Create Event" actions={actions} modal={true} open={true}>
+      <Dialog title="Create Event" actions={actions} open={true} onRequestClose={hideCreateEventDialog}>
         <TextField
           floatingLabelText="Title"
           onChange={(_, value) => this.handleInputChange('title', value)}

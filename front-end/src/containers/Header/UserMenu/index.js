@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import _ from 'lodash'
+
 import { logout } from '../../../actions/auth'
 
 import { FlatButton, Popover, Menu, MenuItem, Divider } from 'material-ui'
@@ -26,6 +28,14 @@ class UserMenu extends Component {
     })
   }
 
+  exportEventsAsJson = () => {
+    const { events } = this.props
+    const resData = events.map(event => _.pick(event, ['start', 'duration', 'title']))
+    const blob = new Blob([JSON.stringify(resData)], { type: 'application/json' })
+    const blobURL = URL.createObjectURL(blob)
+    window.open(blobURL)
+  }
+
   render() {
     const { user, logout } = this.props
     const { open, anchorEl } = this.state
@@ -49,6 +59,14 @@ class UserMenu extends Component {
             <MenuItem primaryText={user.name} disabled />
             <MenuItem primaryText={user.email} disabled />
             <Divider />
+            <MenuItem
+              primaryText="Export events as JSON"
+              onClick={this.exportEventsAsJson}
+              innerDivStyle={{ color: 'rgba(0, 0, 0, 0.87)' }}
+            >
+              {}
+            </MenuItem>
+            <Divider />
             <MenuItem primaryText="Sign out" onClick={logout} innerDivStyle={{ color: 'rgba(0, 0, 0, 0.87)' }} />
           </Menu>
         </Popover>
@@ -59,11 +77,16 @@ class UserMenu extends Component {
 
 UserMenu.propTypes = {
   user: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  events: PropTypes.array.isRequired
 }
+
+const mapStateToProps = state => ({
+  events: state.event.events
+})
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 })
 
-export default connect(null, mapDispatchToProps)(UserMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu)
