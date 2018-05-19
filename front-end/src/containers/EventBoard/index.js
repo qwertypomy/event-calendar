@@ -3,28 +3,36 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import CreateEventButton from './CreateEventButton'
-import CreateEventForm from './CreateEventForm'
+import CreateEventDialog from './CreateEventDialog'
+import DeleteEventDialog from './DeleteEventDialog'
 import Calendar from './Calendar'
+
+const beginningHour = 8
+const endHour = 17
+const stepMinute = 15
 
 class EventBoard extends Component {
   render() {
-    const { isFormShown } = this.props
+    const { isCreateEventDialogShown, isDeleteEventDialogShown } = this.props
     return (
       <Fragment>
-        {isFormShown && <CreateEventForm />}
+        {isCreateEventDialogShown && <CreateEventDialog />}
+        {isDeleteEventDialogShown && <DeleteEventDialog beginningHour={beginningHour} />}
         <CreateEventButton />
-        <Calendar beginningHour={8} endHour={17} stepMinute={15} />
+        <Calendar beginningHour={beginningHour} endHour={endHour} stepMinute={stepMinute} />
       </Fragment>
     )
   }
 }
 
 EventBoard.propTypes = {
-  isFormShown: PropTypes.bool.isRequired
+  isCreateEventDialogShown: PropTypes.bool.isRequired,
+  isDeleteEventDialogShown: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({
-  isFormShown: state.createEventForm.isShown
+  isCreateEventDialogShown: state.createEventDialog.isShown,
+  isDeleteEventDialogShown: !!state.deleteEventDialog.event
 })
 
 export default connect(mapStateToProps)(EventBoard)

@@ -3,11 +3,13 @@ import eventReducer from './event'
 
 // UI
 import notificationReducer from './notification'
-import createEventFormReducer from './createEventForm'
+import createEventDialogReducer from './createEventDialog'
+import deleteEventDialogReducer from './deleteEventDialog'
 
 export default {
   auth: authReducer,
   event: eventReducer,
   notification: notificationReducer,
-  createEventForm: createEventFormReducer
+  createEventDialog: createEventDialogReducer,
+  deleteEventDialog: deleteEventDialogReducer
 }

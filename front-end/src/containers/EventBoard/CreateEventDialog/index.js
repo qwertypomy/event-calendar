@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { createEvent } from '../../../actions/event'
-import { hideCreateEventForm } from '../../../actions/createEventForm'
+import { hideCreateEventDialog } from '../../../actions/createEventDialog'
 
 import { Dialog, FlatButton, TextField, TimePicker } from 'material-ui'
 
@@ -11,7 +11,7 @@ function dateToMinutes(value) {
   return Math.floor(value / 60000)
 }
 
-class CreateEventForm extends Component {
+class CreateEventDialog extends Component {
   state = {
     title: null,
     titleValid: false,
@@ -98,7 +98,7 @@ class CreateEventForm extends Component {
     const isSaveButtonDisabled = loading || !titleValid || !startTimeValid || !endTimeValid
 
     const actions = [
-      <FlatButton label="Cancel" primary onClick={this.props.hideCreateEventForm} />,
+      <FlatButton label="Cancel" primary onClick={this.props.hideCreateEventDialog} />,
       <FlatButton label="Save" primary onClick={this.handleSave} disabled={isSaveButtonDisabled} />
     ]
 
@@ -116,6 +116,7 @@ class CreateEventForm extends Component {
           errorText={startTimeErrorText}
           minutesStep={15}
           fullWidth
+          autoOk
         />
         <TimePicker
           floatingLabelText="End Time"
@@ -123,15 +124,16 @@ class CreateEventForm extends Component {
           errorText={endTimeErrorText}
           minutesStep={15}
           fullWidth
+          autoOk
         />
       </Dialog>
     )
   }
 }
 
-CreateEventForm.propTypes = {
+CreateEventDialog.propTypes = {
   createEvent: PropTypes.func.isRequired,
-  hideCreateEventForm: PropTypes.func.isRequired
+  hideCreateEventDialog: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -140,7 +142,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createEvent: payload => dispatch(createEvent(payload)),
-  hideCreateEventForm: payload => dispatch(hideCreateEventForm())
+  hideCreateEventDialog: payload => dispatch(hideCreateEventDialog())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateEventForm)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateEventDialog)

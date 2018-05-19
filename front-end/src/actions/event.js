@@ -1,6 +1,9 @@
+import uuidv1 from 'uuid/v1'
+
 import axios from '../axios'
 import { notify } from './notification'
-import { hideCreateEventForm } from './createEventForm'
+import { hideCreateEventDialog } from './createEventDialog'
+import { hideDeleteEventDialog } from './deleteEventDialog'
 
 import { store } from '../store'
 
@@ -28,10 +31,14 @@ export const createEventFail = payload => ({
 })
 
 export const createEvent = payload => dispatch => {
+  const onSuccess = event => {
+    dispatch(createEventSuccess({ event: event }))
+    dispatch(hideCreateEventDialog())
+    dispatch(notify({ message: 'Event created.', type: 'success' }))
+  }
+
   if (!store.getState().auth.user) {
-    dispatch(createEventSuccess({ event: payload }))
-    dispatch(hideCreateEventForm())
-    return
+    return onSuccess({ ...payload, _id: uuidv1() })
   }
 
   const authToken = localStorage.getItem('AUTH_TOKEN')
@@ -43,10 +50,7 @@ export const createEvent = payload => dispatch => {
     data: payload,
     headers: { Authorization: authToken }
   })
-    .then(res => {
-      dispatch(createEventSuccess(res.data))
-      dispatch(hideCreateEventForm())
-    })
+    .then(res => onSuccess(res.data.event))
     .catch(err => {
       console.log('ERRORS', err)
       const error = err.response && err.response.data ? err.response.data : err
@@ -69,20 +73,26 @@ export const removeEventFail = payload => ({
   payload
 })
 
-export const removeEvent = eventId => dispatch => {
-  if (!store.getState().auth.user) return dispatch(removeEventSuccess({ event: { _id: eventId } }))
+export const removeEvent = event => dispatch => {
+  const onSuccess = () => {
+    dispatch(removeEventSuccess({ event: event }))
+    dispatch(hideDeleteEventDialog())
+    dispatch(notify({ message: 'Event removed.', type: 'success' }))
+  }
+
+  if (!store.getState().auth.user) {
+    return onSuccess()
+  }
 
   const authToken = localStorage.getItem('AUTH_TOKEN')
 
   dispatch(removeEventStart())
   axios({
     method: 'delete',
-    url: `/events/${eventId}`,
+    url: `/events/${event._id}`,
     headers: { Authorization: authToken }
   })
-    .then(res => {
-      dispatch(removeEventStart(res.data))
-    })
+    .then(res => onSuccess())
     .catch(err => {
       console.log('ERRORS', err)
       const error = err.response && err.response.data ? err.response.data : err

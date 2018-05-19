@@ -1,4 +1,4 @@
-import { SHOW_CREATE_EVENT_FORM, HIDE_CREATE_EVENT_FORM } from '../actions/actionTypes'
+import { SHOW_CREATE_EVENT_DIALOG, HIDE_CREATE_EVENT_DIALOG } from '../actions/actionTypes'
 
 const initialState = {
   isShown: false
@@ -6,11 +6,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SHOW_CREATE_EVENT_FORM:
+    case SHOW_CREATE_EVENT_DIALOG:
       return {
         isShown: true
       }
-    case HIDE_CREATE_EVENT_FORM:
+    case HIDE_CREATE_EVENT_DIALOG:
       return {
         isShown: false
       }
