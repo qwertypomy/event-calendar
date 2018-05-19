@@ -8,7 +8,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import UserMenu from './UserMenu'
 
-import { googleLogin } from '../../actions/auth'
+import { googleLogin, loginUserFail } from '../../actions/auth'
 
 class Header extends Component {
   onGoogleResponse = res => {
@@ -16,7 +16,7 @@ class Header extends Component {
   }
 
   render() {
-    const { user, loginLoading, authLoading } = this.props
+    const { user, loginLoading, authLoading, loginUserFail } = this.props
 
     const iconElementRight = user ? (
       <UserMenu user={user} />
@@ -25,7 +25,7 @@ class Header extends Component {
         <GoogleLogin
           clientId="208617087211-g7gfn9hqpeblg4bme0fk1irrno6tr16f.apps.googleusercontent.com"
           onSuccess={this.onGoogleResponse}
-          onFailure={this.onGoogleResponse}
+          onFailure={loginUserFail}
           type=""
           style={{}}
           disabled={loginLoading}
@@ -52,7 +52,8 @@ Header.propTypes = {
   authLoading: PropTypes.bool.isRequired,
   loginLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  googleLogin: PropTypes.func.isRequired
+  googleLogin: PropTypes.func.isRequired,
+  loginUserFail: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -63,7 +64,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  googleLogin: idToken => dispatch(googleLogin(idToken))
+  googleLogin: idToken => dispatch(googleLogin(idToken)),
+  loginUserFail: () => dispatch(loginUserFail())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

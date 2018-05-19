@@ -1,6 +1,6 @@
 import uuidv1 from 'uuid/v1'
 
-import axios from '../axios'
+import axios from 'axios'
 import { notify } from './notification'
 import { hideCreateEventDialog } from './createEventDialog'
 import { hideDeleteEventDialog } from './deleteEventDialog'

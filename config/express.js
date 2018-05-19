@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -19,6 +20,9 @@ const app = express();
 if (config.env === 'development') {
   app.use(logger('dev'));
 }
+
+// Serve static files from the React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
@@ -48,6 +52,12 @@ if (config.env === 'development') {
 
 // mount all routes on /api path
 app.use('/api', routes);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
+});
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err, req, res, next) => {
