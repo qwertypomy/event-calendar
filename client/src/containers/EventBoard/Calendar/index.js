@@ -14,7 +14,8 @@ const timeSlotMaxWidth = 200 // px
 
 class Calendar extends Component {
   state = {
-    eventsContainerWidth: 0
+    eventsContainerWidth: 0,
+    events: []
   }
 
   timeContainer = React.createRef()
@@ -44,10 +45,11 @@ class Calendar extends Component {
    * Calculate and set .startSlotIndex, .endSlotIndex, .columnsNumber, .number for each event
    */
   extendEventsProp(events, endHour, beginningHour, stepMinute) {
+    const extendedEvents = _.cloneDeep(events)
     const timeSlotsNumber = (endHour - beginningHour) * (60 / stepMinute) + 1
-    const slotsEvents = _.times(timeSlotsNumber, () => Array.apply(null, Array(events.length)))
+    const slotsEvents = _.times(timeSlotsNumber, () => Array.apply(null, Array(extendedEvents.length)))
 
-    events.forEach((event, eventIndex) => {
+    extendedEvents.forEach((event, eventIndex) => {
       event.startSlotIndex = Math.floor(event.start / stepMinute)
       event.endSlotIndex = Math.ceil((event.start + event.duration) / stepMinute)
       event.columnsNumber = 1
@@ -67,17 +69,19 @@ class Calendar extends Component {
     slotsEvents.forEach((slotEvents, slotEventsI) => {
       slotEvents.forEach((eventIndex, eventNumber) => {
         if (eventIndex !== undefined) {
-          events[eventIndex].number = eventNumber
+          extendedEvents[eventIndex].number = eventNumber
           const slotEventsLength = _.findLastIndex(slotEvents, event => event !== undefined) + 1
-          events[eventIndex].columnsNumber = Math.max(slotEventsLength, events[eventIndex].columnsNumber)
+          extendedEvents[eventIndex].columnsNumber = Math.max(slotEventsLength, extendedEvents[eventIndex].columnsNumber)
         }
       })
     })
+
+    this.setState({ events: extendedEvents })
   }
 
   render() {
-    const { events, beginningHour, endHour, showDeleteEventDialog } = this.props
-    const { eventsContainerWidth } = this.state
+    const { beginningHour, endHour, showDeleteEventDialog } = this.props
+    const { eventsContainerWidth, events } = this.state
 
     /*
      * timeRange - array of formated time strings

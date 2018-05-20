@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import App from './App'
 
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/api' : '/api'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
