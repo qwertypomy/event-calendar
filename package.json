@@ -62,6 +62,7 @@
     "method-override": "^2.3.10",
     "mongoose": "^5.1.0",
     "morgan": "1.9.0",
+    "soap": "^0.25.0",
     "winston": "2.4.2"
   },
   "devDependencies": {
