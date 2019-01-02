@@ -1,0 +1,58 @@
+<definitions name="EventCalendarService" targetNamespace="http://www.examples.com/wsdl/EventCalendarService.wsdl"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://www.examples.com/wsdl/EventCalendarService.wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <types>
+    <schema>
+      <element name="User">
+        <complexType>
+          <sequence>
+            <element name="email" type="xsd:string"/>
+            <element name="name" type="xsd:string"/>
+            <element name="picture" type="xsd:string"/>
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+
+  <message name="GoogleLoginRequest">
+    <part name="idToken" type="xsd:string"/>
+  </message>
+
+  <message name="GoogleLoginResponse">
+    <part name="token" type="xsd:string"/>
+    <part name="events" type="Event"/>
+    <part name="user" type="User"/>
+  </message>
+
+  <portType name="EventCalendar_PortType">
+    <operation name="googleLogin">
+      <input message="tns:GoogleLoginRequest"/>
+      <output message="tns:GoogleLoginResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="EventCalendar_Binding" type="tns:EventCalendar_PortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="googleLogin">
+      <soap:operation soapAction="googleLogin"/>
+      <input>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:pmy:EventCalendarservice" use="encoded"/>
+      </input>
+
+      <output>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:pmy:EventCalendarservice" use="encoded"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="EventCalendar_Service">
+    <documentation>WSDL File for EventCalendarService</documentation>
+    <port binding="tns:EventCalendar_Binding" name="EventCalendar_Port">
+      <soap:address location="http://localhost:8080/soap/" />
+    </port>
+  </service>
+</definitions>

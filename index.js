@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 const util = require('util');
+const soap = require('soap');
+
+// SOAP
+const wsdlSchema = require('fs').readFileSync('./server/soap/serviceSchema.wsdl', 'utf8');
+const soapService = require('./server/soap/service');
 
 // config should be imported before importing any other file
 const config = require('./config/config');
@@ -15,7 +20,10 @@ mongoose.Promise = Promise;
 
 // connect to mongo db
 const mongoUri = config.mongo.host;
-mongoose.connect(mongoUri, { keepAlive: 1 });
+mongoose.connect(
+  mongoUri,
+  { keepAlive: 1 }
+);
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });
@@ -32,6 +40,7 @@ if (config.mongooseDebug) {
 if (!module.parent) {
   // listen on port config.port
   app.listen(config.port, () => {
+    soap.listen(app, '/soap', soapService, wsdlSchema);
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
