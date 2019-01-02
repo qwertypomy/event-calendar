@@ -74,7 +74,6 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-watch": "4.0.2",
-    "husky": "0.14.3",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "5.1.1",
     "supertest": "3.1.0",
